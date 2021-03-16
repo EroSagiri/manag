@@ -2,6 +2,7 @@ package org.example.mirai.plugin
 
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
+import net.mamoe.mirai.contact.Group
 import net.mamoe.mirai.event.events.*
 import net.mamoe.mirai.event.globalEventChannel
 import net.mamoe.mirai.message.data.At
@@ -30,7 +31,6 @@ object PluginMain : KotlinPlugin(
     override fun onEnable() {
         val master : Long = 2476255563
         var anime = JSONObject(javaClass.classLoader.getResource("AnimeThesaurus/data.json").readText())
-
         logger.info { "Plugin loaded" }
 
         PluginConfig.reload()
@@ -38,7 +38,7 @@ object PluginMain : KotlinPlugin(
         globalEventChannel().subscribeAlways<MessageEvent> { event ->
             for(key in anime.names()) {
                 if(key is String) {
-                    if(Pattern.compile(key.toString()).matcher(event.message.content).find()) {
+                    if(Pattern.compile(key.toString()).matcher(event.message.content).find() && event.message.serializeToMiraiCode().contains("[mirai:at:${event.bot.id}]") || event.subject !is Group) {
                         val messageArray = anime.getJSONArray(key.toString())
                         val index = Random.nextInt(0, messageArray.length())
                         var message = messageArray[index]
