@@ -15,3 +15,7 @@ repositories {
     mavenCentral()
     jcenter()
 }
+
+dependencies {
+    implementation(group = "org.json", name="json", version = "20210307")
+}

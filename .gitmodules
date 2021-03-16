@@ -1,0 +1,3 @@
+[submodule "src/main/resources/AnimeThesaurus"]
+	path = src/main/resources/AnimeThesaurus
+	url = git@github.com:Kyomotoi/AnimeThesaurus.git
