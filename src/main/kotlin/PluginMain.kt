@@ -1,5 +1,6 @@
 package org.example.mirai.plugin
 
+import net.mamoe.mirai.console.command.ConsoleCommandSender.name
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.contact.Group
@@ -9,6 +10,8 @@ import net.mamoe.mirai.message.data.At
 import net.mamoe.mirai.message.data.content
 import net.mamoe.mirai.utils.info
 import org.json.JSONObject
+import java.io.File
+import java.nio.file.FileSystem
 import java.util.regex.Pattern
 import kotlin.random.Random
 
@@ -29,16 +32,14 @@ object PluginMain : KotlinPlugin(
     }
 ) {
     override fun onEnable() {
-        val master : Long = 2476255563
         var anime = JSONObject(javaClass.classLoader.getResource("AnimeThesaurus/data.json").readText())
         logger.info { "Plugin loaded" }
-
         PluginConfig.reload()
-
+        val master : Long = PluginConfig.master
         globalEventChannel().subscribeAlways<MessageEvent> { event ->
             for(key in anime.names()) {
                 if(key is String) {
-                    if(Pattern.compile(key.toString()).matcher(event.message.content).find() && event.message.serializeToMiraiCode().contains("[mirai:at:${event.bot.id}]") || event.subject !is Group) {
+                    if(Pattern.compile(key.toString()).matcher(event.message.content).find() && event.message.serializeToMiraiCode().contains("[mirai:at:${event.bot.id}]") || event.subject !is Group && event.message.serializeToMiraiCode().contains(key.toString())) {
                         val messageArray = anime.getJSONArray(key.toString())
                         val index = Random.nextInt(0, messageArray.length())
                         var message = messageArray[index]
