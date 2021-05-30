@@ -17,15 +17,14 @@ import kotlin.random.Random
 
 object PluginMain : KotlinPlugin(
     JvmPluginDescription(
-        id = "org.example.mirai-plugin",
-        name = "ExamplePlugin",
-        version = "0.1.0"
+        id = "me.sagiri.mirai.manag",
+        name = "manag",
+        version = "0.1.1"
     ) {
-        author("作者名称或联系方式")
+        author("sagiri")
 
         info("""
-            这是一个测试插件, 
-            在这里描述插件的功能和用法等.
+            emmm
         """.trimIndent())
 
         // author 和 info 可以删除.
